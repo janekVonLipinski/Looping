@@ -39,6 +39,29 @@ public class Looping {
         }
     }
 
+    public List<Double> getAnpressdruck() {
+        List<Double> zentrifugalKraefte = getZentrifugalKraefte();
+        List<Double> normalKraefte = getNormalkraft();
+        List<Double> anpressDruecke = new ArrayList<>();
+
+        for (int i = 0; i < zentrifugalKraefte.size(); i++) {
+            double zentrifugalKraft = zentrifugalKraefte.get(i);
+            double normalKraft = normalKraefte.get(i);
+            double anpressdruck = zentrifugalKraft + normalKraft;
+            anpressDruecke.add(anpressdruck);
+        }
+
+        return anpressDruecke;
+    }
+
+    public List<Double> getNormalkraft() {
+        double gewichtsKraft = mass * g;
+
+        return punkte.stream()
+                .map(punkt -> Math.cos(Math.toRadians(punkt.getBeta())) * gewichtsKraft)
+                .toList();
+    }
+
     public List<Double> getZentrifugalKraefte() {
         List<Double> zentrifugalKraefte = new ArrayList<>();
         List<Double> geschwindigkeitenQuadrat = mapToGeschwindigkeitQuadrat();
