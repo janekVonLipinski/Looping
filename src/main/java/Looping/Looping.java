@@ -6,17 +6,19 @@ import java.util.List;
 public class Looping {
 
     private final List<Punkt> punkte = new ArrayList<>();
+    private final Bedingungen bedingungen;
     private final double startWinkel;
     private final double startStrecke;
     private final double h;
     private final double mass;
     private static final double g = 9.81;
 
-    public Looping(double startWinkel, double startStrecke, double h, double mass) {
+    public Looping(double startWinkel, double startStrecke, double h, double mass, Bedingungen bedingungen) {
         this.startWinkel = startWinkel;
         this.startStrecke = startStrecke;
         this.h = h;
         this.mass = mass;
+        this.bedingungen = bedingungen;
         konstruiere();
     }
 
@@ -24,7 +26,7 @@ public class Looping {
         return punkte;
     }
 
-    public void konstruiere() {
+    private void konstruiere() {
         Punkt ersterPunkt = new Punkt(
                 0, 0, 0, startWinkel
         );
@@ -37,6 +39,11 @@ public class Looping {
         for (int i = 0; i < numberOfIterations; i++) {
             aktuellerPunkt = berechneNaechstenPunkt(aktuellerPunkt);
         }
+    }
+
+    public boolean isValid() {
+        List<Double> anpressdruecke = getAnpressdruck();
+        return bedingungen.istLoopingValide(anpressdruecke, mass * g);
     }
 
     public List<Double> getAnpressdruck() {

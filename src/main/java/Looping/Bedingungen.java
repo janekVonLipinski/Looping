@@ -1,28 +1,31 @@
 package Looping;
 
+import java.util.List;
+
 public class Bedingungen {
-    private double maxHoehe;
-    private double maxGeschwindigkeit;
+    private final double maxHoehe;
+    private final double maxGeschwindigkeit;
 
     public Bedingungen(double maxHoehe, double maxGeschwindigkeit) {
         this.maxHoehe = maxHoehe;
         this.maxGeschwindigkeit = maxGeschwindigkeit;
     }
 
-    public double getMaxHoehe() {
-        return maxHoehe;
+    public boolean istLoopingValide(List<Double> anpressdruecke, double gewichtskraft) {
+        return istAnpressdruckGroesserNull(anpressdruecke)
+                && istGewichtsZuHoch(anpressdruecke, gewichtskraft);
     }
 
-    public void setMaxHoehe(double maxHoehe) {
-        this.maxHoehe = maxHoehe;
+    private boolean istAnpressdruckGroesserNull(List<Double> anpressdruecke) {
+        return anpressdruecke.stream()
+                .map(i -> i > 0)
+                .anyMatch(i -> !i);
     }
 
-    public double getMaxGeschwindigkeit() {
-        return maxGeschwindigkeit;
-    }
-
-    public void setMaxGeschwindigkeit(double maxGeschwindigkeit) {
-        this.maxGeschwindigkeit = maxGeschwindigkeit;
+    private boolean istGewichtsZuHoch(List<Double> anpressdruecke, double gewichtskraft) {
+        return anpressdruecke.stream()
+                .map(i -> i > gewichtskraft)
+                .anyMatch(i -> !i);
     }
 
     public boolean checkHoehe(double hoehe) {
