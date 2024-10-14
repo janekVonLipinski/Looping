@@ -9,12 +9,14 @@ public class Looping {
     private final double startWinkel;
     private final double startStrecke;
     private final double h;
+    private final double mass;
     private static final double g = 9.81;
 
-    public Looping(double startWinkel, double startStrecke, double h) {
+    public Looping(double startWinkel, double startStrecke, double h, double mass) {
         this.startWinkel = startWinkel;
         this.startStrecke = startStrecke;
         this.h = h;
+        this.mass = mass;
         konstruiere();
     }
 
@@ -35,6 +37,22 @@ public class Looping {
         for (int i = 0; i < numberOfIterations; i++) {
             aktuellerPunkt = berechneNaechstenPunkt(aktuellerPunkt);
         }
+    }
+
+    public List<Double> getZentrifugalKraefte() {
+        List<Double> zentrifugalKraefte = new ArrayList<>();
+        List<Double> geschwindigkeitenQuadrat = mapToGeschwindigkeitQuadrat();
+        List<Double> radien = mapToR();
+
+        for (int i = 0; i < radien.size(); i++) {
+            double r = radien.get(i);
+            double vQuadrat = geschwindigkeitenQuadrat.get(i);
+
+            double zentrifugalKraft = (mass * vQuadrat) / r;
+            zentrifugalKraefte.add(zentrifugalKraft);
+        }
+
+        return zentrifugalKraefte;
     }
 
     private List<Double> mapToGeschwindigkeitQuadrat() {
