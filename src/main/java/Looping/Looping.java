@@ -8,10 +8,13 @@ public class Looping {
     private final List<Punkt> punkte = new ArrayList<>();
     private final double startWinkel;
     private final double startStrecke;
+    private final double h;
+    private static final double g = 9.81;
 
-    public Looping(double startWinkel, double startStrecke) {
+    public Looping(double startWinkel, double startStrecke, double h) {
         this.startWinkel = startWinkel;
         this.startStrecke = startStrecke;
+        this.h = h;
         konstruiere();
     }
 
@@ -34,8 +37,15 @@ public class Looping {
         }
     }
 
+    private double getPotenzielleEnergie(Punkt puntk, double r) {
+        return r * ((g * h) - (g * puntk.getY()));
+    }
+
     private List<Double> mapToR() {
-        return new ArrayList<>();
+        return punkte.stream()
+                .map(Punkt::getAlpha)
+                .map(this::getR)
+                .toList();
     }
 
     private double getR(double alpha) {
