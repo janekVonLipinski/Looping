@@ -37,8 +37,22 @@ public class Looping {
         }
     }
 
-    private double getPotenzielleEnergie(Punkt puntk, double r) {
-        return r * ((g * h) - (g * puntk.getY()));
+    private List<Double> mapToGeschwindigkeitQuadrat() {
+        List<Double> rForList = mapToR();
+        List<Double> geschwindigkeiten = new ArrayList<>();
+
+        for (int i = 0; i < rForList.size(); i++) {
+            double r = rForList.get(i);
+            Punkt pInList = punkte.get(i);
+            double v = getGeschwindigkeitQuadrat(pInList, r);
+            geschwindigkeiten.add(v);
+        }
+
+        return geschwindigkeiten;
+    }
+
+    private double getGeschwindigkeitQuadrat(Punkt punkt, double r) {
+        return r * g * (h - punkt.getY());
     }
 
     private List<Double> mapToR() {
